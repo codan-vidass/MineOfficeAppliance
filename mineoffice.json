@@ -1,0 +1,25 @@
+{
+    "builders": [
+        {
+            "name": "virtualbox-ovf-1",
+            "type": "virtualbox-ovf",
+            "source_path": "../template/debian-jessie.ova",
+            "ssh_username": "vagrant",
+            "ssh_password": "vagrant",
+            "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
+            "post_shutdown_delay": "60s"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": [
+                "sleep 30",
+                "sudo apt-get install -y software-properties-common",
+                "sudo apt-get update",
+                "sudo apt-get install -y git"
+            ]
+        }
+    ],
+    "post-processors": ["vagrant"]
+}
