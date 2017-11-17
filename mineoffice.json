@@ -17,7 +17,8 @@
                 "sleep 30",
                 "sudo apt-get install -y software-properties-common",
                 "sudo apt-get update",
-                "sudo apt-get install -y git"
+                "sudo apt-get install -y git",
+                "echo LS_COLORS=$LS_COLORS:'di=0;36' ; export LS_COLORS >> ~/.bashrc"
             ]
         }
     ],
