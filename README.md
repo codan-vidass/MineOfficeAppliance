@@ -39,6 +39,28 @@ below to help resolve the issue:
 Source: https://rubygems.org/
 ```
 
-If this is the case, you will need to add the Zscaler certificate to a system environment variable `SSL_CERT_FILE`.
+C:\Program Files\Git\usr\ssl\certs\
+
+If this is the case, you will need to add the Zscaler certificate (ZscalerRootCertificate-2048-SHA256.crt) to a system environment variable `SSL_CERT_FILE`.
+A good location for storing this file might be: *C:\Program Files\Git\usr\ssl\certs\*
 
 The install command should then work.
+
+## Error updating trust certificates
+
+If you receive the following error (or similar) running the command `update-ca-trust`:
+
+```bash
+p11-kit: 'Files/Git/mingw64/bin/trust' is not a valid command. See 'Program --help'
+p11-kit: couldn't run trust tool: No error
+```
+
+It is likely because of the space in the *Program Files* directory.
+
+Launch a new git-bash console (as Administrator) from the command line with the following command:
+
+```bash
+C:\PROGRA~1\Git\git-cmd.exe --no-cd --command=usr/bin/bash.exe -l -i
+```
+
+Then try the `update-ca-trust` command again.
