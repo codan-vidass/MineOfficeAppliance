@@ -20,6 +20,7 @@ else
     cd target
     packer build ../mineoffice.json
     vagrant box add test_box packer_virtualbox-ovf-1_virtualbox.box -f
+    vagrant up --provision
     cd ..
     
 fi

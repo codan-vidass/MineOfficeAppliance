@@ -22,7 +22,9 @@
                 "sudo apt-get install -y ntfs-3g",
                 "sudo apt-get install -y pmount",
 				"sudo apt-get install -y dos2unix",
-                "echo LS_COLORS=$LS_COLORS:'di=0;36' ; export LS_COLORS >> ~/.bashrc"
+				"sudo rm /etc/localtime",
+				"sudo ln -s /usr/share/zoneinfo/Australia/Perth /etc/localtime",
+                "echo export LS_COLORS=\$LS_COLORS:\'di=0\;36\' >> ~/.bashrc"
             ]
         }
     ],

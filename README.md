@@ -11,11 +11,38 @@ C:\PROGRA~1\Git\git-cmd.exe --no-cd --command=usr/bin/bash.exe -l -i
 
 (The above is important because not all command-line interfaces will work with the Vagrant box. For example, there are many problems using git-bash directly.)
 
-2. Need to copy *debian-jessie.ova* into the template directory. This is an OVA built from the debian.jessie64.box file.
-3. Need to also copy *rear_2.2_amd64.deb* into the target/rear directory. This is used to install the REAR software for backup/imaging.
-4. Run from the command prompt './buildall.sh'
-5. cd into target directory and run *vagrant up* to launch the built box. This may take a while (5 minutes).
-6. vagrant ssh (password is vagrant) ( CTRL + C to exit, CTRL + D if it gets stuck, or vagrant halt in another console)
+2. Copy *debian-jessie.ova* into the template directory. This is an OVA built from the debian.jessie64.box file.
+3. Copy *rear_2.2_amd64.deb* into the target/rear directory. This is used to install the REAR software for backup/imaging.
+4. Run from the command prompt `./buildall.sh`
+5. cd into target directory and run `vagrant up --provision` to launch the built box for the first time. This may take a while (5 minutes).
+6. Run `vagrant ssh` (password is vagrant) ( CTRL + C to exit, CTRL + D if it gets stuck, or vagrant halt in another console)
+7. For subsequent uses, you can just use `vagrant up` rather than `vagrant up --provision`
+
+## To create image/installation media
+
+Run the following command which will give hints as to usage: `/vagrant/conf/create_image.sh`
+
+If run in *iso* or *isorescue* mode, it should output an .iso file in the */vagrant/resources/debian-jessie* directory. 
+This iso can then be attached to a Virtual Box, although I've only got it to work in rescue mode.
+
+## Test the installation media using VirtualBox
+
+1. Set up a simple virtual box (Type: Linux, Debian (64-bit)) with all default settings.
+2. Right click, settings, storage, add optical drive, choose storage - attach the generated iso (rear-debian-jessie.iso)
+3. Make sure that the USB controller is running (Settings, USB, choose USB 3.0) and include a filter for the appropriate device.
+4. Launch it, and from the rest-and-recover menu, choose the manual recover option.
+5. After logging in, type `/dev/disk/by-label` to confirm that `REAR-000` is there..
+6. mount /dev/disk/by-label/REAR-000 /mnt/local
+
+## Launching an existing headless vagrant box with VirtualBox
+
+This is useful for mounting the USB etc..
+
+1. Uncomment the `config.vm.provider "virtualbox" do |vb|` code in the Vagrantfile
+2. Type `vagrant suspend` on the host
+3. Type `vagrant up` on the host
+4. If you're testing a USB, it should show up in the "Devices" menu on VirtualBox, but you might need to unplug it and plug it back in
+
 
 ## Installing vagrant-vbguest plugin on Windows
 
