@@ -13,9 +13,13 @@ elif [[ $1 = iso ]]; then
     sudo rear -v mkbackup
 else
     echo "Generating a USB backup at $1.."
-    sudo cp /vagrant/conf/rear_usb.conf /etc/rear/local.conf 
+    sudo cp /vagrant/conf/rear_usb_iso.conf /etc/rear/local.conf
     sudo rear format -- -y $1
-    sudo rear -v mkbackup 
+    sudo rear -v mkbackup
+
+    sudo mkdir /usb
+    sudo mount /dev/disk/by-label/REAR-000 /usb
+    sudo cp /usb/debian-jessie/rear-debian-jessie.iso /vagrant/resources/
 fi
 
 

@@ -20,10 +20,11 @@ C:\PROGRA~1\Git\git-cmd.exe --no-cd --command=usr/bin/bash.exe -l -i
 
 ## To create image/installation media
 
-Run the following command which will give hints as to usage: `/vagrant/conf/create_image.sh`
+Run the following command assuming the USB is visible (leave out the argument for help): 
 
-If run in *iso* or *isorescue* mode, it should output an .iso file in the */vagrant/resources/debian-jessie* directory. 
-This iso can then be attached to a Virtual Box, although I've only got it to work in rescue mode.
+`/vagrant/conf/create_image.sh /dev/sdb1`
+
+It will format the USB, and write the ISO and the backup tarball onto that device, then copy the ISO into the /vagrant directory so you can access it from the host.
 
 ## Test the installation media using VirtualBox
 
@@ -31,8 +32,9 @@ This iso can then be attached to a Virtual Box, although I've only got it to wor
 2. Right click, settings, storage, add optical drive, choose storage - attach the generated iso (rear-debian-jessie.iso)
 3. Make sure that the USB controller is running (Settings, USB, choose USB 3.0) and include a filter for the appropriate device.
 4. Launch it, and from the rest-and-recover menu, choose the manual recover option.
-5. After logging in, type `/dev/disk/by-label` to confirm that `REAR-000` is there..
-6. mount /dev/disk/by-label/REAR-000 /mnt/local
+5. Follow all of the default prompts (there should be a way to skip this..)
+6. Once done, `sudo reboot` the system, and from the rear menu you can choose to boot from the first local disk
+7. If you shutdown the VirtualBox and remove the ISO and restart, it should launch simiarly to the system you backed up..
 
 ## Launching an existing headless vagrant box with VirtualBox
 
