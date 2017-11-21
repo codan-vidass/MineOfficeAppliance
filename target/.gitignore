@@ -1,3 +1,5 @@
 *
 !.gitignore
 !Vagrantfile
+!conf
+!conf/*

@@ -1,6 +1,22 @@
 # MineOfficeAppliance
 Methods for installing the Mine Office Appliance on a new machine
 
+## Core Instructions
+
+1. Launch a new command prompt (as Administrator) and start a git-bash console with the following command:
+
+```bash
+C:\PROGRA~1\Git\git-cmd.exe --no-cd --command=usr/bin/bash.exe -l -i
+```
+
+(The above is important because not all command-line interfaces will work with the Vagrant box. For example, there are many problems using git-bash directly.)
+
+2. Need to copy *debian-jessie.ova* into the template directory. This is an OVA built from the debian.jessie64.box file.
+3. Need to also copy *rear_2.2_amd64.deb* into the target/rear directory. This is used to install the REAR software for backup/imaging.
+4. Run from the command prompt './buildall.sh'
+5. cd into target directory and run *vagrant up* to launch the built box. This may take a while (5 minutes).
+6. vagrant ssh (password is vagrant) ( CTRL + C to exit, CTRL + D if it gets stuck, or vagrant halt in another console)
+
 ## Installing vagrant-vbguest plugin on Windows
 
 If you get the following error with the command `vagrant up`:
@@ -57,10 +73,10 @@ p11-kit: couldn't run trust tool: No error
 
 It is likely because of the space in the *Program Files* directory.
 
-Launch a new git-bash console (as Administrator) from the command line with the following command:
+This can be avoided by launching the console using the recommended approach at the beginning of the instructions.
 
-```bash
-C:\PROGRA~1\Git\git-cmd.exe --no-cd --command=usr/bin/bash.exe -l -i
-```
+## Freezing while SSHing into Vagrant box
 
-Then try the `update-ca-trust` command again.
+Probably due to multiple virtual machines running at the same time:
+
+https://askubuntu.com/questions/716467/vagrant-ssh-terminal-freezes

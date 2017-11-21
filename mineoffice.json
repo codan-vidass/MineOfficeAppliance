@@ -3,7 +3,7 @@
         {
             "name": "virtualbox-ovf-1",
             "type": "virtualbox-ovf",
-            "source_path": "../template/debian-jessie.ova",
+            "source_path": "../resources/debian-jessie.ova",
             "ssh_username": "vagrant",
             "ssh_password": "vagrant",
             "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
@@ -18,6 +18,10 @@
                 "sudo apt-get install -y software-properties-common",
                 "sudo apt-get update",
                 "sudo apt-get install -y git",
+                "sudo apt-get install -y extlinux",
+                "sudo apt-get install -y ntfs-3g",
+                "sudo apt-get install -y pmount",
+				"sudo apt-get install -y dos2unix",
                 "echo LS_COLORS=$LS_COLORS:'di=0;36' ; export LS_COLORS >> ~/.bashrc"
             ]
         }
