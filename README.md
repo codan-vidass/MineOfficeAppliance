@@ -11,16 +11,23 @@ C:\PROGRA~1\Git\git-cmd.exe --no-cd --command=usr/bin/bash.exe -l -i
 
 (The above is important because not all command-line interfaces will work with the Vagrant box. For example, there are many problems using git-bash directly.)
 
-2. Copy *debian-jessie.ova* into the template directory. This is an OVA built from the debian.jessie64.box file.
-3. Copy *rear_2.2_amd64.deb* into the target/rear directory. This is used to install the REAR software for backup/imaging.
-4. Run from the command prompt `./buildall.sh`
-5. cd into target directory and run `vagrant up --provision` to launch the built box for the first time. This may take a while (5 minutes).
-6. Run `vagrant ssh` (password is vagrant) ( CTRL + C to exit, CTRL + D if it gets stuck, or vagrant halt in another console)
-7. For subsequent uses, you can just use `vagrant up` rather than `vagrant up --provision`
+2. Change into "MineOfficeAppliance" directory.
+3. Copy *debian-jessie.ova* into the template directory. This is an OVA built from the debian.jessie64.box file.
+4. Copy *rear_2.2_amd64.deb* into the target/rear directory. This is used to install the REAR software for backup/imaging.
+5. Run from the command prompt `./buildall.sh`
+  * This process can take over 5 minutes
+  * Sometimes this appears to get stuck, but pressing the ENTER key can trigger the display to update.
+6. cd into target directory and run `vagrant up --provision` to launch the built box for the first time. This may take a while (5 minutes).
+7. Run `vagrant ssh` (password is vagrant) ( CTRL + C to exit, CTRL + D if it gets stuck, or vagrant halt in another console)
+8. For subsequent uses, you can just use `vagrant up` rather than `vagrant up --provision`
 
-## To create image/installation media
+## To create REAR image/installation media
 
-Run the following command assuming the USB is visible (leave out the argument for help): 
+In order to see a USB thumbdrive (or equivalent) to write the image/installation to, you will probably need to launch the vagrant box with an associated virtual machine.
+
+To do this with VirtualBox, follow the section *Launching an existing headless vagrant box with VirtualBox* below.
+
+Then on the vagrant box, log in and run the following command assuming the USB is visible (leave out the argument for help): 
 
 `/vagrant/conf/create_image.sh /dev/sdb1`
 
@@ -109,3 +116,10 @@ This can be avoided by launching the console using the recommended approach at t
 Probably due to multiple virtual machines running at the same time:
 
 https://askubuntu.com/questions/716467/vagrant-ssh-terminal-freezes
+
+## Unable to see USB thumbdrive once you've started the recovery process on a new machine
+
+Could be because the VM or original machine you imaged from has fewer USB ports.
+As a result, although when you boot the machine it can see the thumbdrive and boot REAR from it, once it has 
+loaded the image it can no longer see the device.
+Try using a USB port or if possible use VM with more ports as your original source image.

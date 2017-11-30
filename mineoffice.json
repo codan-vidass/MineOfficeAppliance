@@ -24,7 +24,7 @@
 				"sudo apt-get install -y dos2unix",
 				"sudo rm /etc/localtime",
 				"sudo ln -s /usr/share/zoneinfo/Australia/Perth /etc/localtime",
-                "echo export LS_COLORS=\$LS_COLORS:\'di=0\;36\' >> ~/.bashrc"
+                "echo export LS_COLORS=\\$LS_COLORS:\'di=0\;36\' >> ~/.bashrc"
             ]
         }
     ],
