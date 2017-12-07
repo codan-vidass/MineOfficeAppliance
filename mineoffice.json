@@ -1,32 +1,62 @@
 {
+	"variables": {
+		"ssh_name": "vagrant",
+		"ssh_pass": "vagrant",
+		"hostname": "debian",
+		"preseed_file": "debian-8-preseed.cfg",
+		"vm_name": "base-jessie",
+		"domain": ""
+	},
+
     "builders": [
         {
-            "name": "virtualbox-ovf-1",
-            "type": "virtualbox-ovf",
-            "source_path": "../resources/debian-jessie.ova",
-            "ssh_username": "vagrant",
-            "ssh_password": "vagrant",
-            "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
-            "post_shutdown_delay": "60s"
-        }
-    ],
-    "provisioners": [
-        {
-            "type": "shell",
-            "inline": [
-                "sleep 30",
-                "sudo apt-get install -y software-properties-common",
-                "sudo apt-get update",
-                "sudo apt-get install -y git",
-                "sudo apt-get install -y extlinux",
-                "sudo apt-get install -y ntfs-3g",
-                "sudo apt-get install -y pmount",
-				"sudo apt-get install -y dos2unix",
-				"sudo rm /etc/localtime",
-				"sudo ln -s /usr/share/zoneinfo/Australia/Perth /etc/localtime",
-                "echo export LS_COLORS=\\$LS_COLORS:\'di=0\;36\' >> ~/.bashrc"
+            "name": "virtualbox-1",
+            "type": "virtualbox-iso",
+
+            "guest_os_type": "Debian_64",
+
+            "iso_url": "../resources/debian-8.9.0-amd64-DVD-1.iso",
+            "iso_checksum": "8adb2d5b6a689a1952fd05776816b616",
+            "iso_checksum_type": "md5",
+
+            "http_directory" : "../http",
+
+            "ssh_username": "{{user `ssh_name`}}",
+            "ssh_password": "{{user `ssh_pass`}}",
+
+            "ssh_pty" : "true",
+            "ssh_wait_timeout": "20m",
+
+            "shutdown_command": "echo '{{user `ssh_pass`}}' | sudo -S shutdown -P now",
+            "post_shutdown_delay": "60s",
+
+            "boot_command":
+            [
+                "<esc><wait>",
+                "/install.amd/vmlinuz ",
+                "initrd=/install.amd/initrd.gz ",
+                "auto=true ",
+                "url=http://{{.HTTPIP}}:{{.HTTPPort}}/{{user `preseed_file`}} ",
+                "hostname={{user `vm_name`}} ",
+                "domain={{user `domain`}} ",
+                "interface=auto ",
+                "vga=788 noprompt quiet --<enter>"
             ]
         }
     ],
+
+    "provisioners": [
+        {
+            "type": "shell",
+            "execute_command": "echo '{{user `ssh_pass`}}' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'",
+            "inline": [
+                "sleep 30",
+                "sudo rm /etc/localtime",
+                "sudo ln -s /usr/share/zoneinfo/Australia/Perth /etc/localtime",
+                "echo export \"LS_COLORS=\\$LS_COLORS:'di=0;36'\" >> ~/.bashrc"
+            ]
+        }
+    ],
+
     "post-processors": ["vagrant"]
 }

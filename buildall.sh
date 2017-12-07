@@ -13,19 +13,21 @@ elif ! [ "$(ls -A target/resources/$REAR_PACKAGE)" ] ; then
 	echo "http://download.opensuse.org/repositories/Archiving:/Backup:/Rear/Debian_8.0/amd64/"
 else
     echo "Destroying existing vagrant boxes.."
+    vagrant global-status --prune
     vagrant destroy -f
-    vagrant box remove test_box
+    vagrant box remove vbox
     rm -r target/*.box &> /dev/null
 
     echo "Building with Packer.."
     cd target
-    packer build ../mineoffice.json
+    packer build -force ../mineoffice.json
 
-	echo "Adding Vagrant Box.."
-    vagrant box add test_box packer_virtualbox-ovf-1_virtualbox.box -f
+    echo "Adding Vagrant Box.."
+    vagrant box add vbox packer_virtualbox-1_virtualbox.box -f
 
     echo "Provisioning Vagrant Box.."
     vagrant up --provision
+
     cd ..
-    
+
 fi

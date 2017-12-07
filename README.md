@@ -12,8 +12,8 @@ C:\PROGRA~1\Git\git-cmd.exe --no-cd --command=usr/bin/bash.exe -l -i
 (The above is important because not all command-line interfaces will work with the Vagrant box. For example, there are many problems using git-bash directly.)
 
 2. Change into "MineOfficeAppliance" directory.
-3. Copy *debian-jessie.ova* into the template directory. This is an OVA built from the debian.jessie64.box file.
-4. Copy *rear_2.2_amd64.deb* into the target/rear directory. This is used to install the REAR software for backup/imaging.
+3. Copy *debian-8.9.0-amd64-netinst.iso* into the *resources* directory. It can be obtained from https://www.debian.org/releases/jessie/debian-installer/
+4. Copy *rear_2.2_amd64.deb* into the *target/resources* directory. This is used to install the REAR software for backup/imaging. It can be obtained from http://download.opensuse.org/repositories/Archiving:/Backup:/Rear:/Snapshot/Debian_8.0/amd64/
 5. Run from the command prompt `./buildall.sh`
   * This process can take over 5 minutes
   * Sometimes this appears to get stuck, but pressing the ENTER key can trigger the display to update.
@@ -123,3 +123,29 @@ Could be because the VM or original machine you imaged from has fewer USB ports.
 As a result, although when you boot the machine it can see the thumbdrive and boot REAR from it, once it has 
 loaded the image it can no longer see the device.
 Try using a USB port or if possible use VM with more ports as your original source image.
+
+## To get checksum of an ISO for packer .json file
+
+```certutil -hashfile debian-8.9.0-amd64-netinst.iso MD5```
+
+## Using vagrant with VMWare
+
+You'll probably need to install the VMWare plugins, either:
+
+```vagrant plugin install vagrant-vmware-fusion```
+
+or
+
+```vagrant plugin install vagrant-vmware-workstation```
+
+Will also want to run some command similar to the following and possibly need a new vagrantfile in a new directory:
+
+```vagrant box add vmware_box packer_vmware-1_vmware.box -f```
+
+Further information can be found here:
+
+https://www.vagrantup.com/docs/vmware/
+
+A license is required:
+
+https://www.vagrantup.com/vmware/#buy-now
