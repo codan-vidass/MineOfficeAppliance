@@ -5,7 +5,9 @@
 		"hostname": "debian",
 		"preseed_file": "debian-8-preseed.cfg",
 		"vm_name": "base-jessie",
-		"domain": ""
+		"domain": "",
+		"iso_source": "../resources/debian-8.9.0-amd64-DVD-1.iso",
+		"iso_check": "8adb2d5b6a689a1952fd05776816b616"
 	},
 
     "builders": [
@@ -15,8 +17,8 @@
 
             "guest_os_type": "Debian_64",
 
-            "iso_url": "../resources/debian-8.9.0-amd64-DVD-1.iso",
-            "iso_checksum": "8adb2d5b6a689a1952fd05776816b616",
+            "iso_url": "{{user `iso_source`}}",
+            "iso_checksum": "{{user `iso_check`}}",
             "iso_checksum_type": "md5",
 
             "http_directory" : "../http",
@@ -29,6 +31,37 @@
 
             "shutdown_command": "echo '{{user `ssh_pass`}}' | sudo -S shutdown -P now",
             "post_shutdown_delay": "60s",
+
+            "boot_command":
+            [
+                "<esc><wait>",
+                "/install.amd/vmlinuz ",
+                "initrd=/install.amd/initrd.gz ",
+                "auto=true ",
+                "url=http://{{.HTTPIP}}:{{.HTTPPort}}/{{user `preseed_file`}} ",
+                "hostname={{user `vm_name`}} ",
+                "domain={{user `domain`}} ",
+                "interface=auto ",
+                "vga=788 noprompt quiet --<enter>"
+            ]
+        },
+        {
+            "name": "vmware-1",
+            "type": "vmware-iso",
+
+            "iso_url": "{{user `iso_source`}}",
+            "iso_checksum": "{{user `iso_check`}}",
+            "iso_checksum_type": "md5",
+
+            "http_directory" : "../http",
+
+            "ssh_username": "{{user `ssh_name`}}",
+            "ssh_password": "{{user `ssh_pass`}}",
+
+            "ssh_pty" : "true",
+            "ssh_wait_timeout": "20m",
+
+            "shutdown_command": "echo '{{user `ssh_pass`}}' | sudo -S shutdown -P now",
 
             "boot_command":
             [
@@ -58,5 +91,10 @@
         }
     ],
 
-    "post-processors": ["vagrant"]
+    "post-processors": [
+        {
+            "type": "vagrant",
+            "only": ["virtualbox-1"]
+        }
+    ]
 }

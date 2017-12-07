@@ -1,6 +1,6 @@
 #! /bin/bash
 
-TEMPLATE_IMAGE="debian-jessie.ova"
+TEMPLATE_IMAGE="debian-8.9.0-amd64-DVD-1.iso"
 REAR_PACKAGE="rear_2.2_amd64.deb"
 
 if ! [ "$(ls -A resources/$TEMPLATE_IMAGE)" ] ; then
@@ -15,8 +15,12 @@ else
     echo "Destroying existing vagrant boxes.."
     vagrant global-status --prune
     vagrant destroy -f
+
     vagrant box remove vbox
+    vagrant box remove vmware
+
     rm -r target/*.box &> /dev/null
+    rm -r target/output-vmware-1 &> /dev/null
 
     echo "Building with Packer.."
     cd target
