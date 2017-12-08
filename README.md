@@ -3,7 +3,7 @@ Methods for installing the Mine Office Appliance on a new machine
 
 ## Core Instructions
 
-1. Launch a new command prompt (as Administrator) and start a git-bash console with the following command:
+1. Launch a new command prompt as Administrator. You may want to create a shortcut that always launches the console as administrator with the following command:
 
 ```bash
 C:\PROGRA~1\Git\git-cmd.exe --no-cd --command=usr/bin/bash.exe -l -i
